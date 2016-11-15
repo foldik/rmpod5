@@ -14,14 +14,10 @@ APP.submarine = function (submerineId, positions) {
 			})
 			return {
 				submarineState: function() {
-					var result = states[roundSubmarineCount];
-					roundSubmarineCount++;
-					return result;
+					return states[roundSubmarineCount++];
 				},
 				sonarState: function() {
-					var result = states[roundSonarCount];
-					roundSonarCount++;
-					return result;
+					return states[roundSonarCount++];
 				},
 				firstPosition: function() {
 					return states[1];
@@ -29,6 +25,30 @@ APP.submarine = function (submerineId, positions) {
 				reset: function () {
 					roundSubmarineCount = 1;
 					roundSonarCount = 1;
+				}
+			}
+		}())
+	}
+}
+
+APP.waterObject = function (id, positions) {
+	return {
+		id: id,
+		position: (function() {
+			var actualRound = 1;
+			var states = [];
+			positions.forEach(function(element) {
+				APP.put(states, element);
+			})
+			return {
+				state: function() {
+					return states[actualRound++];
+				},
+				firstPosition: function() {
+					return states[1];
+				},
+				reset: function () {
+					actualRound = 1;
 				}
 			}
 		}())
