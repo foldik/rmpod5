@@ -153,17 +153,17 @@ APP.games.forEach(function(game) {
             });
 
             scoreLabelSelector.transition()
-                .durations(timePeriod)
+                .duration(timePeriod)
                 .on('end', function nextScore() {
                     var next = game.scores.nextScore();
                     if (next) {
                         scoreLabelSelector.transition()
-                            .durations(timePeriod)
+                            .duration(timePeriod)
                             .text('Score: ' + next.score)
                             .on('end', nextScore);
                     } else {
                         scoreLabelSelector.transition()
-                            .durations(timePeriod)
+                            .duration(timePeriod)
                             .on('end', nextScore);
                     }
                 });
