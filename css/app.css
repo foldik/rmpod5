@@ -8,9 +8,38 @@ body {
 	height: 100vh;
 }
 
-.container {
+.menu {
 	position: absolute;
 	top: 0;
+	bottom: 4.5rem;
+	right: 0;
+	left: 0;
+	background-color: rgb(240,240,240);
+	text-align: center;
+}
+
+.menu-item {
+	display: inline-block;
+	position: relative;
+	color: white;
+	background-color: brown;
+	margin-top: 0.2rem;
+	margin-bottom: 0.2rem;
+	margin-left: 1rem;
+	padding: 0.5rem 2rem 0.5rem 2rem;
+	border-radius: 3px;
+	box-shadow: 0 4px 6px rgba(0,0,0,0.25), 0 3px 6px rgba(0,0,0,0.22);
+	font-size: 2.8rem;
+}
+
+.menu-item:hover {
+	opacity: 0.9;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.24);
+}
+
+.container {
+	position: absolute;
+	top: 4.5rem ;
 	bottom: 0;
 	right: 0;
 	left: 0;
@@ -41,9 +70,20 @@ body {
 .date-label {
 	display: inline-block;
 	color: white;
-	background-color: black;
+	background-color: brown;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.24);
 	padding: 0.5rem;
 	border-radius: 1px;
+}
+
+.score-label {
+	position: absolute;
+	right: 20px;
+	display: inline-block;
+	color: black;
+	background-color: rgb(250,250,250);
+	padding: 0.5rem;
+	border-radius: 3px;
 }
 
 .diagram {

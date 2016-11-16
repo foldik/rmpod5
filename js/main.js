@@ -3,6 +3,7 @@ APP.games.forEach(function(game) {
 	var mySubmarines = [];
 	var torpedos = [];
 	var otherSubmarines = [];
+	var scoreLabelSelector = d3.select('#score' + game.gameId.replace('game', ''));
 
 	game.mySubmarines.forEach(function(submarine) {
 		var submarineSelector = svg.append('circle')
@@ -10,14 +11,14 @@ APP.games.forEach(function(game) {
 			.attr('class', 'my-submarine')
 			.attr('cx', submarine.position.firstPosition().x)
 			.attr('cy', submarine.position.firstPosition().y)
-			.attr('r', 7.5);
+			.attr('r', game.submarineSize);
 
 		var sonarSelector = svg.append('circle')
 			.attr('id', 'sonar' + submarine.id)
 			.attr('class', 'sonar')
 			.attr('cx', submarine.position.firstPosition().x)
 			.attr('cy', submarine.position.firstPosition().y)
-			.attr('r', 75);
+			.attr('r', game.simpleSonarSize);
 
 		mySubmarines.push({
 			submarine: submarine,
@@ -50,7 +51,7 @@ APP.games.forEach(function(game) {
             otherSubmarineSelector
                 .attr('cx', otherSubmarine.position.firstPosition().x)
                 .attr('cy', otherSubmarine.position.firstPosition().y)
-                .attr('r', 7.5);
+                .attr('r', game.submarineSize);
         }
         otherSubmarines.push({
             otherSubmarine: otherSubmarine,
@@ -62,7 +63,7 @@ APP.games.forEach(function(game) {
 	svg.on('click', function() {
 		if (flag === 1) {
 			flag = 0;
-			var timePeriod = 70;
+			var timePeriod = 50;
 			mySubmarines.forEach(function(element) {
 				element.submarineSelector.transition()
 					.duration(timePeriod)
@@ -74,7 +75,7 @@ APP.games.forEach(function(game) {
                                 .duration(timePeriod)
                                 .attr('cx', submarineState.x)
                                 .attr('cy', submarineState.y)
-                                .attr('r', 7.5)
+                                .attr('r', game.submarineSize)
                                 .on('end', moveMySubmarine);
 						} else {
 						    d3.select(this)
@@ -94,7 +95,7 @@ APP.games.forEach(function(game) {
                                 .duration(timePeriod)
                                 .attr('cx', sonarState.x)
                                 .attr('cy', sonarState.y)
-                                .attr('r', sonarState.sonar === 'extended' ? 115 : 75)
+                                .attr('r', sonarState.sonar === 'extended' ? game.simpleSonarSize : game.extendedSonarSize)
                                 .on('end', moveSonar);
                         } else {
                             d3.select(this)
@@ -139,7 +140,7 @@ APP.games.forEach(function(game) {
                                 .duration(timePeriod)
                                 .attr('cx', state.x)
                                 .attr('cy', state.y)
-                                .attr('r', 7.5)
+                                .attr('r', game.submarineSize)
                                 .on('end', moveOtherSubmarine);
                         } else {
                             d3.select(this)
@@ -150,6 +151,22 @@ APP.games.forEach(function(game) {
                         }
                 });
             });
+
+            scoreLabelSelector.transition()
+                .delay(timePeriod)
+                .on('end', function nextScore() {
+                    var next = game.scores.nextScore();
+                    if (next) {
+                        scoreLabelSelector.transition()
+                            .delay(timePeriod)
+                            .text('Score: ' + next.score)
+                            .on('end', nextScore);
+                    } else {
+                        scoreLabelSelector.transition()
+                            .delay(timePeriod)
+                            .on('end', nextScore);
+                    }
+                });
 
 		} else {
 			flag = 1;
@@ -165,6 +182,7 @@ APP.games.forEach(function(game) {
             otherSubmarines.forEach(function(element) {
                 element.otherSubmarineSelector.transition();
             });
+            scoreLabelSelector.transition();
 		}
 	});
 	
